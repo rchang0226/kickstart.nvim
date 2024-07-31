@@ -164,19 +164,23 @@ vim.keymap.set('v', 'fd', '<Esc>', {noremap = true, silent = true})
 vim.keymap.set('c', 'fd', '<C-c>', {noremap = true, silent = true})
 
 -- Remap navigation keys
+-- Normal mode
 vim.keymap.set('n', 'j', 'h', {noremap = true, silent = true})
 vim.keymap.set('n', 'k', 'j', {noremap = true, silent = true})
-vim.keymap.set('n', 'i', 'k', {noremap = true, silent = true})
-vim.keymap.set('v', 'j', 'h', {noremap = true, silent = true})
-vim.keymap.set('v', 'k', 'j', {noremap = true, silent = true})
 vim.keymap.set('n', 'i', 'k', {noremap = true, silent = true})
 -- Remap h to i, H to I
 vim.keymap.set('n', 'h', 'i', {noremap = true, silent = true})
 vim.keymap.set('n', 'H', 'I', {noremap = true, silent = true})
+-- Visual mode
+vim.keymap.set('v', 'j', 'k', {noremap = true, silent = true})
+vim.keymap.set('v', 'k', 'j', {noremap = true, silent = true})
+-- Operator mode
+vim.keymap.set('o', 'k', 'j', {noremap = true, silent = true})
+vim.keymap.set('o', 'j', 'k', {noremap = true, silent = true})
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set('n', 'fd', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -244,6 +248,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'ThePrimeagen/vim-be-good',
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -361,11 +366,14 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = { 
+               ['<c-enter>'] = 'to_fuzzy_refine',
+               ['fd'] = require('telescope.actions').close
+            },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
